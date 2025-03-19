@@ -10,7 +10,7 @@ Map file is `.cwm`. It is a Zlib compressed XML.
 - `customgames/`: All imported custom maps
   - `*.cwm`: File name is 8 random lowercase alphabets.
 - `Local Store/`: Empty directory. Seems unused
-- `gameData.dat`: RC4 Encrypted and Zlib compressed XML **TODO**
+- `gameData.dat`: RC4 Encrypted and Zlib compressed XML.
 - `gameState.dat`: AMF serialized format of an object. **TODO**
 - `workingmap.cwm`: Map imported from map editor using "Deploy Working Map To Game" feature. Click "Launch Your Custom Game" in game to play.
 
@@ -25,15 +25,15 @@ Root tag is `<games>`. It contains the following tags:
 * `<particleEffects>`: true/false
 * `<unchartedGames>`: Chronom missions. Contains any number of `<IndividualGame>` tags.
 * `<specialGames>`: Special Ops missions. Contains 10 `<IndividualGame>` tags, each with gameNumber 0 to 9.
-* `<randomGames>`: Conquest missions. Contains 10 `<IndividualGame>` tags, each with gameNumber 1 to 25.
-* `<storyGames>`: Story missions. Contains 10 `<IndividualGame>` tags, each with gameNumber 0 to 19.
+* `<randomGames>`: Conquest missions. Contains 25 `<IndividualGame>` tags, each with gameNumber 1 to 25.
+* `<storyGames>`: Story missions. Contains 20 `<IndividualGame>` tags, each with gameNumber 0 to 19.
 * `<customGames>`: Custom maps. Contains any number of `<IndividualGame>` tags.
 
 Contents of `<IndividualGame>`:
 * `<gameNumber>`: int, or -1 if custom map or Chronom mission
 * `<gameName>`
     - If custom map, File name `*.cwm` in `customgames/` folder.
-    - If Chronom mission, days since January 1, 0000, 0-based
+    - If Chronom mission, days since January 1, 0000, 0-based (This number is not correct due to buggy date implementation)
     - Otherwise, this tag does not exist
 * `<highScore>`: int, or 0 if not beaten
 * `<lastScore>`: int, or 0 if not beaten
