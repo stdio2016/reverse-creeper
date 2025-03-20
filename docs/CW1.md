@@ -11,7 +11,7 @@ Map file is `.cwm`. It is a Zlib compressed XML.
   - `*.cwm`: File name is 8 random lowercase alphabets.
 - `Local Store/`: Empty directory. Seems unused
 - `gameData.dat`: RC4 Encrypted and Zlib compressed XML.
-- `gameState.dat`: AMF serialized format of an object. **TODO**
+- `gameState.dat`: AMF serialized format of an object.
 - `workingmap.cwm`: Map imported from map editor using "Deploy Working Map To Game" feature. Click "Launch Your Custom Game" in game to play.
 
 ## gameData.dat
@@ -41,3 +41,12 @@ Contents of `<IndividualGame>`:
 * `<playCount>`: int, or 0 if not beaten
 * `<lastPlayed>`: number, as javascript epoch, or 0 if not beaten
 * `<scoreSubmitted>`: javascript epoch of submitted time, or 0 if not submitted
+
+## gameState.dat
+AMF3 format object
+* `windowDisplayState`: string (normal/maximized)
+* `windowBounds`: many members exists, however only the following are used
+    - `x`: int
+    - `y`: int
+    - `width`: int
+    - `height`: int
