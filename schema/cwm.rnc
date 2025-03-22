@@ -1,0 +1,181 @@
+start = game
+game = element game {
+    element version { text },
+    element terrain {
+        element terrainHeight { xsd:string { pattern="[1-5](,[1-5])+" } },
+        # 3360=70x48 items
+        # item index is [x + y*80], x from left to right, y from top to bottom
+        element edgeSize { xsd:int },
+        element tint1 { xsd:double },
+        element tint2 { xsd:double },
+        element tint3 { xsd:double },
+        element tint4 { xsd:double },
+        element tint5 { xsd:double }
+    },
+    element walls {
+        element wallData { xsd:string { pattern="\d+(,\d+)+" } }
+        # 3360 (70x48) items
+        # 0 is no wall
+        # 1 is wall
+        # 1000000 is crazonium wall
+    },
+    element background {
+        # out-of-range backgroundMap will crash the game
+        element backgroundMap { xsd:int { minInclusive="0" maxInclusive="5" } }
+    },
+    element places { empty }?, # places tag occurs again below, seems like a map editor bug
+    element specialplaces {
+        element BaseGun {
+            xy,
+            element health { xsd:int }, # no use, always 0
+            element energyLevel { xsd:int } # no use, always 0
+        },
+        element Rift {
+            xy,
+            element health { xsd:int }, # no use, always 0
+            element energyLevel { xsd:int } # no use, always 0
+        }
+    },
+    element places {
+        element Totem {
+            xy
+        }*
+    },
+    element emitters {
+        element emitter {
+            xy,
+            element startTime { xsd:int }, # in frames
+            element frequency { xsd:int }, # in frames
+            element intensity { xsd:double } # negative creeper does not spread
+        }*
+    },
+    element upgrades {
+        element Upgrade {
+            xy
+        }*
+    },
+    element pods {
+        element SurvivalPod {
+            xy
+        }*
+    },
+    element ruins {
+        element Ruin {
+            xy,
+            element desc { encodedText }
+        }*
+    },
+    element collectors {
+        element Collector {
+            xy
+        }*
+    },
+    element relays {
+        element Relay {
+            xy
+        }*
+    },
+    element storage {
+        element Storage {
+            xy
+        }*
+    },
+    element speed {
+        element Speed {
+            xy
+        }*
+    },
+    element reactors {
+        element Reactor {
+            xy
+        }*
+    },
+    element blasters {
+        element Blaster {
+            xy,
+            element armed { boolean },
+            element locked { boolean }
+        }*
+    },
+    element mortars {
+        element Mortar {
+            xy,
+            element armed { boolean },
+            element locked { boolean }
+        }*
+    },
+    element sams {
+        element Sam {
+            xy,
+            element armed { boolean },
+            element locked { boolean }
+        }*
+    },
+    element drones {
+        element Drone {
+            xy,
+            element armed { boolean },
+            element locked { boolean }
+        }*
+    },
+    element mines {
+        element Mine {
+            xy
+        }*
+    },
+    element techs {
+        element Tech {
+            xy,
+            element tech { xsd:int { minInclusive="0" maxInclusive="9" } }
+        }*
+    },
+    element sporewaves {
+        element SporeWave {
+            element time { xsd:int { minInclusive="1" } }, # in frames
+            element count { xsd:int { minInclusive="1" } },
+            element intensity { xsd:double { minInclusive="0" } },
+            element side {
+                "top" | "bottom" | "left" | "right"
+                | "Top" | "Bottom" | "Left" | "Right"
+            }
+        }*
+    },
+    element tech {
+        element collector { boolean },
+        element relay { boolean },
+        element storage { boolean },
+        element speed { boolean },
+        element reactor { boolean },
+        element blaster { boolean },
+        element mortar { boolean },
+        element sam { boolean },
+        element drone { boolean },
+        element thor { boolean }
+    },
+    element player {
+        element energycolor { color },
+        element lockedcity { boolean }
+    },
+    element creeper {
+        element color { color },
+        element mistColor1 { color },
+        element mistColor2 { color }
+    },
+    element title { encodedText },
+    element opening { encodedText },
+    element custombackground { xsd:base64Binary }?
+}
+
+# user texts are URL-encoded
+encodedText = xsd:anyURI
+
+# color is hex number RRGGBB converted to deciman
+color = xsd:int { minInclusive="0" maxInclusive="16777215" }
+
+# position xy
+xy =
+    element gameSpaceX { xsd:int { minInclusive="0" maxInclusive="69" } }, # left to right
+    element gameSpaceY { xsd:int { minInclusive="0" maxInclusive="47" } } # top to down
+
+# true or false
+boolean = xsd:boolean { pattern="true|false" }

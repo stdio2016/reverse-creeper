@@ -1,0 +1,27 @@
+# written with the aid of ChatGPT
+start = games
+
+games = element games {
+    element playerName { text },
+    element groupName { text },
+    element muteMainMusic { xsd:boolean },
+    element musicVolume { xsd:float { minInclusive="0.0" maxInclusive="1.0" } },
+    element mistEffects { xsd:boolean },
+    element particleEffects { xsd:boolean },
+    element unchartedGames { IndividualGame* },
+    element specialGames { IndividualGame+ },
+    element randomGames { IndividualGame+ },
+    element storyGames { IndividualGame+ },
+    element customGames { IndividualGame* }
+}
+
+IndividualGame = element IndividualGame {
+    element gameNumber { xsd:int { minInclusive="-1" } },
+    element gameName { text }?,
+    element highScore { xsd:int },
+    element lastScore { xsd:int },
+    element minTime { xsd:int },
+    element playCount { xsd:int },
+    element lastPlayed { xsd:long },
+    element scoreSubmitted { xsd:long }
+}

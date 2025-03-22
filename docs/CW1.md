@@ -3,7 +3,36 @@
 ## Map file format
 Map file is `.cwm`. It is a Zlib compressed XML.
 
-**TODO** XML structure
+Root tag is `<game>`. It contains the following tags:
+* `<version>`: string
+* `<terrain>`
+* `<walls>`
+* `<background>`
+* `<places>`: first occurence of `<places>` is an empty tag, seems to workaround some old game bugs
+* `<specialplaces>`
+* `<places>`
+* `<emitters>`
+* `<upgrades>`
+* `<pods>`
+* `<ruins>`
+* `<collectors>`
+* `<relays>`
+* `<storage>`
+* `<speed>`
+* `<reactors>`
+* `<blasters>`
+* `<mortars>`
+* `<sams>`
+* `<drones>`
+* `<mines>`
+* `<techs>`
+* `<sporewaves>`
+* `<tech>`
+* `<player>`
+* `<creeper>`
+* `<title>`: string. Map title
+* `<opening>`: string. Opening text
+* `<custombackground>`: Base64 encoded background image. Tag only appears when the map has custom background.
 
 ## Save directory
 - `#airversion/`: Folder contains an empty file representing Adobe Air version.
@@ -40,7 +69,7 @@ Contents of `<IndividualGame>`:
 * `<minTime>`: int. Play time in frames (36 frames per second), or 0 if not beaten
 * `<playCount>`: int, or 0 if not beaten
 * `<lastPlayed>`: number, as javascript epoch, or 0 if not beaten
-* `<scoreSubmitted>`: javascript epoch of submitted time, or 0 if not submitted
+* `<scoreSubmitted>`: javascript epoch of submission time, or 0 if not submitted
 
 ## gameState.dat
 AMF3 format object
