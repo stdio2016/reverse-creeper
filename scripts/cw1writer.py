@@ -8,7 +8,7 @@ args = arg_parser.parse_args()
 infile = args.infile
 outfile = args.outfile
 
-with open(infile, 'r', encoding='utf8') as fin:
+with open(infile, 'rb') as fin:
     raw = fin.read()
     dat = zlib.compress(raw)
     with open(outfile, 'wb') as fout:
