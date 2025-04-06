@@ -1,0 +1,19 @@
+start = element maps {
+    element d { text }, # discord channel ID for custom maps
+    element m {
+        element i { text }, # map id
+        element t { xsd:long }, # map upload time, in javascript timestamp
+        element g { text }, # map GUID
+        element a { text }, # map author
+        element l { text }, # map title
+        element w { xsd:int }, # map width
+        element h { xsd:int }, # map height
+        element o { xsd:int }, # map objectives, a bitfield with 6 bits
+        element s { text }, # tags, separated by comma
+        element b { xsd:int }, # likes count
+        element p { xsd:int }, # kunckle cracker forum thread ID
+        element z { text }, # discord thread ID. If empty, this map is only on kunckle cracker fourm
+        element u { xsd:int }, # thumbnail image size, in bytes
+        element v { xsd:int } # version nmumber, currently 0 to 4
+    }*
+}
