@@ -1,7 +1,7 @@
 start = element maps {
     element d { text }, # discord channel ID for custom maps
     element m {
-        element i { text }, # map id
+        element i { xsd:int }, # map id
         element t { xsd:long }, # map upload time, in javascript timestamp
         element g { text }, # map GUID
         element a { text }, # map author
