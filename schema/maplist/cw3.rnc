@@ -1,0 +1,19 @@
+start = element maps {
+    element m {
+        element i { text }, # map id
+        element t { xsd:long }, # map upload time, in javascript timestamp
+        element g { text }, # map GUID
+        element a { text }, # map author
+        element l { text }, # map title
+        element w { xsd:int }, # map width
+        element h { xsd:int }, # map height
+        element e { text }, # map description
+        element o { xsd:int }, # download count
+        element s { xsd:int }, # submitted score count
+        element d { xsd:int }, # median submitted play time, in frames, 1 second = 30 frames
+        element r { xsd:float }, # rating, 0.00 = NR
+        element n { xsd:int }, # submitted rating count
+        element p { xsd:int }, # forum thread ID
+        element u { xsd:int }, # thumbnail image size, in bytes
+    }*
+}
