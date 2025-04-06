@@ -1,0 +1,2 @@
+// paste into browser console to get PlayerPrefs file of CW3 Abraxis
+window.d&&URL.revokeObjectURL(d);a=indexedDB.open('/idbfs');await new Promise(resolve=>{a.onsuccess=()=>{b=a.result.transaction('FILE_DATA').objectStore('FILE_DATA').get('/idbfs/7195429a697a9493e88d00746c0fd9b4/PlayerPrefs');b.onsuccess=()=>{c=b.result.contents;d=URL.createObjectURL(new Blob([c],{type:'application/blob'}));resolve(d);}}})
