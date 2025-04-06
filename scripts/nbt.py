@@ -47,6 +47,12 @@ class CNBTReader:
     def readIntArray(self):
         size = self.readInt32()
         return array.array('i', self.readNBytes(size * 4))
+    def readInt16Array(self):
+        size = self.readInt32()
+        return array.array('h', self.readNBytes(size * 2))
+    def readInt64Array(self):
+        size = self.readInt32()
+        return array.array('q', self.readNBytes(size * 8))
     def readVector2Array(self):
         size = self.readInt32()
         return [struct.unpack('ff', self.readNBytes(8)) for _ in range(size)]
@@ -116,17 +122,19 @@ class CNBTReader:
         if tag == 226: # unknown, maybe Vector3i?
             return struct.unpack('<iii', self.readNBytes(12))
         if tag == 227:
-            return [x != 0 for x in self.readByteArray()]
+            return 'boolArr', [x != 0 for x in self.readByteArray()]
+        if tag == 228:
+            return 'vec4Arr', self.readVector4Array()
         if tag == 229:
             return self.readVector4()
         if tag == 230:
             return self.readByte() == 1
         if tag == 231:
-            return self.readStringArray()
+            return 'strArr', self.readStringArray()
         if tag == 232:
-            return self.readVector2Array()
+            return 'vec2Arr', self.readVector2Array()
         if tag == 233:
-            return self.readVector3Array()
+            return 'vec3Arr', self.readVector3Array()
         if tag == 234:
             return self.readVector2()
         if tag == 235:
@@ -135,6 +143,10 @@ class CNBTReader:
             return ('quaternion', *self.readVector4())
         if tag == 243:
             return self.readFloatArray()
+        if tag == 244:
+            return self.readInt64Array()
+        if tag == 247:
+            return self.readInt16Array()
         if tag == 249:
             return ('uint', self.readUInt32())
         if tag == 250:
