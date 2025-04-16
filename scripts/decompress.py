@@ -56,6 +56,83 @@ class LZ4Decompressor:
             out.append(s)
         return b''.join(out)
 
+def lz4_len(dat: bytes):
+    i = 0
+    n = len(dat)
+    size = 0
+    while i < n:
+        token = dat[i]
+        i += 1
+        lit_len = token >> 4
+        copy_len = token & 0xf
+
+        if lit_len == 15:
+            while dat[i] == 255:
+                lit_len += 255
+                i += 1
+            lit_len += dat[i]
+            i += 1
+        i += lit_len
+
+        if i == n:
+            return size + lit_len
+
+        i += 2
+        if copy_len == 15:
+            while dat[i] == 255:
+                copy_len += 255
+                i += 1
+            copy_len += dat[i]
+            i += 1
+        copy_len += 4
+        size += lit_len + copy_len
+    return size
+
+def lz4_decompress(dat: bytes):
+    i = 0
+    n = len(dat)
+    pos = 0
+    out = bytearray(lz4_len(dat))
+    while i < n:
+        token = dat[i]
+        i += 1
+        lit_len = token >> 4
+        copy_len = token & 0xf
+
+        # output literal
+        if lit_len == 15:
+            while dat[i] == 255:
+                lit_len += 255
+                i += 1
+            lit_len += dat[i]
+            i += 1
+        out[pos:pos+lit_len] = dat[i:i+lit_len]
+        i += lit_len
+        pos += lit_len
+
+        if i == n:
+            return out
+
+        # copy dictionary
+        offset = int.from_bytes(dat[i:i+2], byteorder='little')
+        i += 2
+        if copy_len == 15:
+            while dat[i] == 255:
+                copy_len += 255
+                i += 1
+            copy_len += dat[i]
+            i += 1
+        copy_len += 4
+        if copy_len > offset:
+            # overlap
+            part = out[pos-offset:pos]
+            rep = part * -(copy_len // -offset)
+            out[pos:pos+copy_len] = rep[:copy_len]
+        else:
+            out[pos:pos+copy_len] = out[pos-offset:pos-offset+copy_len]
+        pos += copy_len
+    return out
+
 # from K4os.Compression.LZ4 pickler format
 # repo is https://github.com/MiloszKrajewski/K4os.Compression.LZ4
 def read_k4os_lz4_pickler(dat: bytes) -> bytes:
@@ -77,8 +154,7 @@ def read_k4os_lz4_pickler(dat: bytes) -> bytes:
         raise TypeError('Unknown K4os.Compresssion.LZ4 header byte {}'.format(header))
 
     compressed_size = len(dat) - pos
-    decompressor = LZ4Decompressor(dat[pos:])
-    out_dat = decompressor.read()
+    out_dat = lz4_decompress(dat[pos:])
     if len(out_dat) != compressed_size + size_diff:
         print(f'Size differs! expected: {compressed_size+size_diff} actual {len(out_dat)}')
     return out_dat
