@@ -68,6 +68,8 @@ class CNBTReader:
     def readList(self):
         tag = self.readByte()
         size = self.readInt32()
+        if size == 0:
+            return ('emptyList', tag)
         obj = []
         for i in range(size):
             value = self.readTag(tag)
